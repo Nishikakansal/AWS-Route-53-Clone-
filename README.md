@@ -1,79 +1,138 @@
-🌐 AWS Route 53 Clone
+# 🌐 AWS Route 53 Clone
 
-A full-stack AWS Route 53 Clone that recreates core DNS management functionality through a modern AWS-inspired interface.
+A full-stack **AWS Route 53 Clone** built with **Next.js, FastAPI, and SQLite**. The project recreates the core Route 53 user experience and workflows, including authentication, hosted zone management, DNS record management, search, pagination, and persistent storage.
 
-🚀 Live Demo
+## 🚀 Live Demo
 
-Frontend: https://dns-route-53.vercel.app/
+- 🌐 **Frontend:** https://dns-route-53.vercel.app/
+- ⚙️ **Backend API:** https://aws-route-53-clone-production.up.railway.app/
+- ❤️ **Health Check:** https://aws-route-53-clone-production.up.railway.app/health
 
-Backend API: https://aws-route-53-clone-production.up.railway.app/
+---
 
-Health Check: https://aws-route-53-clone-production.up.railway.app/health
+## ✨ Features
 
-✨ Features
+### 🔐 Authentication
 
-🔐 User authentication
+- User registration
+- User login
+- JWT-based authentication
+- Bearer token authentication
+- Session persistence
+- Protected API requests
+- Logout
 
-📊 AWS-style dashboard
+### 🌐 Hosted Zones
 
-🌐 Hosted zone management
+Users can:
 
-📄 DNS record management
+- View hosted zones
+- Search hosted zones
+- Create hosted zones
+- Edit hosted zones
+- Delete hosted zones
+- Use pagination
 
-❤️ Health checks
+All hosted zone data is persisted in SQLite.
 
-🔎 DNS resolver interface
+### 📄 DNS Records
 
-🚦 Traffic policies
+Users can manage DNS records within hosted zones.
 
-👤 User profile functionality
+Supported record types:
 
-🔗 Frontend and backend API integration
+- A
+- AAAA
+- CNAME
+- TXT
+- MX
+- NS
+- PTR
+- SRV
+- CAA
 
-🛠️ Tech Stack
+Users can:
 
-Frontend
+- View records
+- Search records
+- Create records
+- Edit records
+- Delete records
 
-Next.js
+### 🧭 Route 53 Experience
 
-React
+The frontend recreates the Route 53 experience with:
 
-TypeScript
+- AWS-inspired navigation
+- Hosted zone management
+- DNS record management
+- Tables
+- Search
+- Pagination
+- Forms
+- Notifications
 
-CSS
+### 🚧 Mocked Sections
 
-Backend
+The following sections are included as placeholder pages:
 
-FastAPI
+- Dashboard
+- Traffic Policies
+- Health Checks
+- Resolver
+- Profiles
 
-Python
+---
 
-SQLAlchemy
+# 🛠️ Tech Stack
 
-Pydantic
+## Frontend
 
-Database
+- Next.js
+- React
+- TypeScript
+- CSS
 
-SQLite
+## Backend
 
-Deployment
+- FastAPI
+- Python
+- SQLAlchemy
+- Pydantic
 
-Frontend: Vercel
+## Database
 
-Backend: Railway
+- SQLite
 
-Version Control: GitHub
+## Deployment
 
-📁 Project Structure
+- Frontend: Vercel
+- Backend: Railway
+- Version Control: GitHub
 
+---
+
+# 📁 Project Structure
+
+```text
 AWS-Route-53-Clone/
+│
 ├── backend/
 │   ├── app/
+│   │   ├── auth/
 │   │   ├── models/
 │   │   ├── routers/
+│   │   │   ├── auth.py
+│   │   │   ├── hosted_zones.py
+│   │   │   └── records.py
+│   │   ├── schemas/
 │   │   ├── database.py
+│   │   ├── deps.py
 │   │   └── main.py
+│   │
+│   ├── requirements.txt
 │   └── route53.db
+│
 ├── frontend/
 │   ├── app/
 │   │   ├── dashboard/
@@ -82,189 +141,352 @@ AWS-Route-53-Clone/
 │   │   ├── login/
 │   │   ├── profiles/
 │   │   ├── resolver/
-│   │   └── traffic-policies/
+│   │   ├── traffic-policies/
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   │
 │   ├── components/
 │   ├── lib/
-│   └── public/
+│   │   └── api.ts
+│   ├── public/
+│   └── package.json
+│
 └── README.md
+```
 
-⚙️ Run Locally
+---
 
-1. Clone the Repository
+# ⚙️ Running the Project Locally
 
+## 1. Clone the Repository
+
+```bash
 git clone https://github.com/Nishikakansal/AWS-Route-53-Clone-.git
 cd AWS-Route-53-Clone-
+```
 
-🖥️ Backend Setup
+---
 
+# 🖥️ Backend Setup
+
+Navigate to the backend folder:
+
+```bash
 cd backend
+```
+
+Create a virtual environment:
+
+```bash
 python -m venv venv
+```
 
-Windows activation
+Activate it on Windows:
 
+```bash
 venv\Scripts\activate
+```
 
 Install dependencies:
 
+```bash
 pip install -r requirements.txt
+```
 
-Run the server:
+Run the FastAPI server:
 
+```bash
 uvicorn app.main:app --reload
+```
 
-Backend:
+The backend will run at:
 
+```text
 http://localhost:8000
+```
 
-API documentation:
+### API Documentation
 
+```text
 http://localhost:8000/docs
+```
 
-🎨 Frontend Setup
+---
 
+# 🎨 Frontend Setup
+
+Navigate to the frontend folder:
+
+```bash
 cd frontend
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
 
-Create .env.local:
+Create a `.env.local` file:
 
+```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-Run:
+Run the development server:
 
+```bash
 npm run dev
+```
 
 Open:
 
+```text
 http://localhost:3000
+```
 
-🔗 API Integration
+---
 
-For production, configure:
+# 🔗 API Integration
 
+For local development:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+For production:
+
+```env
 NEXT_PUBLIC_API_URL=https://aws-route-53-clone-production.up.railway.app
+```
 
-The frontend API client should use:
+The frontend communicates with the FastAPI backend using this environment variable.
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+Authentication tokens are sent using:
 
-🗄️ Database
+```text
+Authorization: Bearer <access_token>
+```
 
-The project uses SQLite with SQLAlchemy.
+---
 
+# 🗄️ Database
+
+The project uses **SQLite** with **SQLAlchemy**.
+
+```python
 DATABASE_URL = "sqlite:///./route53.db"
+```
 
-Database tables are created when the backend starts:
+The application stores persistent data for:
 
+- Users
+- Hosted Zones
+- DNS Records
+
+Database tables are created when the application starts:
+
+```python
 Base.metadata.create_all(bind=engine)
+```
 
-🩺 Health Check
+---
 
-Endpoint:
+# ❤️ Health Check
 
+### Endpoint
+
+```text
 GET /health
+```
 
-Example response:
+### Example Response
 
+```json
 {
   "status": "Backend is running"
 }
+```
 
-Production:
+Production Health Check:
 
 https://aws-route-53-clone-production.up.railway.app/health
 
-🌍 Deployment Architecture
+---
 
-User Browser
-     │
-     ▼
-Vercel (Next.js Frontend)
-     │
-     │ API Requests
-     ▼
-Railway (FastAPI Backend)
-     │
-     ▼
-SQLite Database
+# 🌍 Deployment Architecture
 
-🚀 Deployment
+```text
+                    ┌──────────────────────┐
+                    │      User Browser    │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │       Vercel         │
+                    │   Next.js Frontend   │
+                    └──────────┬───────────┘
+                               │
+                           API Requests
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │       Railway        │
+                    │   FastAPI Backend    │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │   SQLite Database    │
+                    └──────────────────────┘
+```
 
-Frontend – Vercel
+---
 
-Live application:
+# 🚀 Deployment
+
+## 🌐 Frontend — Vercel
+
+Live Application:
 
 https://dns-route-53.vercel.app/
 
 Root Directory:
 
+```text
 frontend
+```
 
 Environment Variable:
 
+```env
 NEXT_PUBLIC_API_URL=https://aws-route-53-clone-production.up.railway.app
+```
 
-Backend – Railway
+---
+
+## ⚙️ Backend — Railway
 
 Production API:
 
 https://aws-route-53-clone-production.up.railway.app/
 
-🔒 CORS
+The backend handles:
 
-For production, configure the backend environment variable:
+- Authentication
+- Hosted Zone APIs
+- DNS Record APIs
+- Database operations
 
+---
+
+# 🔒 CORS Configuration
+
+For production:
+
+```env
 FRONTEND_URL=https://dns-route-53.vercel.app
+```
 
-🎯 Future Improvements
+For local development:
 
-PostgreSQL integration
+```text
+http://localhost:3000
+```
 
-Password hashing and improved authentication
+---
 
-Advanced DNS record validation
+# 📡 API Overview
 
-Real AWS Route 53 API integration
+## Authentication
 
-Advanced health monitoring
+```text
+POST /auth/register
+POST /auth/login
+```
 
-Role-based access control
+## Hosted Zones
 
-Docker support
+```text
+GET    /hosted-zones
+POST   /hosted-zones
+GET    /hosted-zones/{id}
+PUT    /hosted-zones/{id}
+DELETE /hosted-zones/{id}
+```
 
-🧠 What I Learned
+### Search Hosted Zones
 
-Full-stack development
+```text
+GET /hosted-zones?search=example
+```
 
-Next.js and React
+### Hosted Zone Pagination
 
-FastAPI and REST APIs
+```text
+GET /hosted-zones?page=1&limit=5
+```
 
-SQLAlchemy ORM
+## DNS Records
 
-Database integration
+```text
+GET    /records
+POST   /records
+GET    /records/{id}
+PUT    /records/{id}
+DELETE /records/{id}
+```
 
-Frontend-backend communication
+---
 
-CORS configuration
+# 🎯 Future Improvements
 
-Environment variables
+- [ ] PostgreSQL integration
+- [ ] Password hashing
+- [ ] Advanced DNS record validation
+- [ ] Import DNS records from BIND zone files
+- [ ] Export hosted zones as JSON
+- [ ] Export hosted zones as BIND format
+- [ ] Dark mode
+- [ ] Keyboard shortcuts
+- [ ] Bulk operations
+- [ ] Role-based access control
+- [ ] Docker support
 
-Vercel deployment
+---
 
-Railway deployment
+# 🧠 What I Learned
 
-Git and GitHub workflows
+- Full-stack application development
+- Next.js and React
+- TypeScript
+- FastAPI
+- REST API design
+- JWT authentication
+- SQLAlchemy ORM
+- SQLite database management
+- Frontend-backend integration
+- CORS configuration
+- Environment variables
+- Vercel deployment
+- Railway deployment
+- Git and GitHub workflows
 
-👩‍💻 Author
+---
 
-Nishika Kansal
+# 👩‍💻 Author
+
+**Nishika Kansal**
 
 CSE Student | Aspiring Software Development Engineer | AI/ML Enthusiast
 
 GitHub: https://github.com/Nishikakansal
 
-📄 License
+---
 
-This project was built for educational and learning purposes.
+# 📄 License
 
-It is inspired by Amazon Route 53 concepts and is not affiliated with or endorsed by Amazon Web Services (AWS).
+This project was created for **educational and learning purposes**.
+
+It is inspired by Amazon Route 53 concepts and user experience and is **not affiliated with or endorsed by Amazon Web Services (AWS)**.
