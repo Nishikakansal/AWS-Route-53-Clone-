@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -20,28 +22,32 @@ app = FastAPI(
 )
 
 
-# CORS configuration
-import os
+
 
 allowed_frontend = os.getenv("FRONTEND_URL", "")
+
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+
 if allowed_frontend:
     origins.append(allowed_frontend.rstrip("/"))
 
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins if allowed_frontend else ["*"],
-    allow_origin_regex=r"https?://.*",
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
-# Create default mock user
+# ==========================================
+# CREATE DEFAULT MOCK USER
+# ==========================================
+
 def create_default_user():
     db: Session = SessionLocal()
 
@@ -69,7 +75,7 @@ def create_default_user():
 create_default_user()
 
 
-# Health check
+
 @app.get("/health")
 def health_check():
     return {
@@ -77,7 +83,7 @@ def health_check():
     }
 
 
-# Include routers
+
 app.include_router(auth.router)
 app.include_router(hosted_zones.router)
 app.include_router(records.router)
