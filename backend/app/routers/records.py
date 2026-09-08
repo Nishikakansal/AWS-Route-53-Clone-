@@ -89,6 +89,14 @@ def get_dns_records(
             detail="Hosted Zone not found",
         )
 
+    total_records = db.query(DNSRecord).filter(
+        DNSRecord.hosted_zone_id == hosted_zone_id
+    ).count()
+
+    if total_records == 0:
+        from app.routers.hosted_zones import seed_default_records
+        seed_default_records(db, hosted_zone)
+
     query = db.query(DNSRecord).filter(
         DNSRecord.hosted_zone_id == hosted_zone_id
     )
@@ -206,6 +214,14 @@ def delete_dns_record(
             status_code=404,
             detail="DNS Record not found",
         )
+
+    if record.record_type in ("NS", "SOA"):
+        zone_name = record.hosted_zone.name if record.hosted_zone else ""
+        if record.name == zone_name or record.name == f"{zone_name}." or not record.name:
+            raise HTTPException(
+                status_code=400,
+                detail=f"You can't delete the SOA record or the NS record named {zone_name}."
+            )
 
     db.delete(record)
     db.commit()

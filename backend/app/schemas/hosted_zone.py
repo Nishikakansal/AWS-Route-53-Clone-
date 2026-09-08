@@ -16,14 +16,14 @@ class HostedZoneUpdate(BaseModel):
     zone_type: str | None = None
 
 
-# Data returned from the API
 class HostedZoneResponse(BaseModel):
     id: int
     user_id: int
     name: str
     description: str | None
     zone_type: str
+    record_count: int = 0
     created_at: datetime
     updated_at: datetime
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)

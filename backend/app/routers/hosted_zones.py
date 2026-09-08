@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.deps import get_db, get_current_user
 from app.models.hosted_zone import HostedZone
+from app.models.dns_record import DNSRecord
 from app.models.user import User
 from app.schemas.hosted_zone import (
     HostedZoneCreate,
@@ -15,6 +16,35 @@ router = APIRouter(
     prefix="/hosted-zones",
     tags=["Hosted Zones"],
 )
+
+
+def seed_default_records(db: Session, zone: HostedZone):
+    domain = zone.name.rstrip(".")
+    ns_servers = (
+        "ns-948.awsdns-54.net.\n"
+        "ns-1213.awsdns-23.org.\n"
+        "ns-1794.awsdns-32.co.uk.\n"
+        "ns-186.awsdns-23.com."
+    )
+    soa_val = "ns-948.awsdns-54.net. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
+
+    ns_record = DNSRecord(
+        hosted_zone_id=zone.id,
+        name=domain,
+        record_type="NS",
+        value=ns_servers,
+        ttl=172800,
+    )
+    soa_record = DNSRecord(
+        hosted_zone_id=zone.id,
+        name=domain,
+        record_type="SOA",
+        value=soa_val,
+        ttl=900,
+    )
+    db.add(ns_record)
+    db.add(soa_record)
+    db.commit()
 
 
 # CREATE Hosted Zone
@@ -50,6 +80,9 @@ def create_hosted_zone(
     db.commit()
     db.refresh(new_hosted_zone)
 
+    seed_default_records(db, new_hosted_zone)
+    setattr(new_hosted_zone, "record_count", len(new_hosted_zone.dns_records))
+
     return new_hosted_zone
 
 
@@ -80,6 +113,12 @@ def get_hosted_zones(
         .all()
     )
 
+    for zone in hosted_zones:
+        if len(zone.dns_records) == 0:
+            seed_default_records(db, zone)
+            db.refresh(zone)
+        setattr(zone, "record_count", len(zone.dns_records))
+
     return hosted_zones
 
 
@@ -105,7 +144,14 @@ def get_hosted_zone(
             detail="Hosted Zone not found",
         )
 
+    if len(hosted_zone.dns_records) == 0:
+        seed_default_records(db, hosted_zone)
+        db.refresh(hosted_zone)
+
+    setattr(hosted_zone, "record_count", len(hosted_zone.dns_records))
+
     return hosted_zone
+
 
 
 # UPDATE Hosted Zone

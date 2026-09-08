@@ -252,8 +252,8 @@ export default function HomePage() {
                 {/* ── TOP NAVBAR ── */}
                 <header className="hp-nav">
                     {/* AWS Logo */}
-                    <div className="hp-logo" onClick={() => router.push("/")}>
-                        aws
+                    <div className="hp-logo" onClick={() => router.push("/")} style={{ display: "flex", alignItems: "center", background: "#232f3e", borderRadius: "4px", padding: "3px 7px" }}>
+                        <img src="/aws-logo.png" alt="AWS" style={{ height: "22px", width: "auto", objectFit: "contain" }} />
                     </div>
 
                     <div className="hp-vdiv" />
@@ -360,18 +360,16 @@ export default function HomePage() {
                     <div className="hp-lower-grid">
                         {/* Video card */}
                         <div className="hp-video">
-                            <div className="hp-video-top">
-                                <div className="hp-video-logo">aws</div>
-                                <div>
-                                    <strong>Amazon Route 53</strong>
-                                    <span>Amazon Web Services</span>
-                                </div>
-                            </div>
-                            <div className="hp-video-body">
-                                <span>▣</span>
-                                <div className="hp-dashed" />
-                                <span>◎</span>
-                            </div>
+                            <img
+                                src="/Howitwork.png"
+                                alt="How Amazon Route 53 works"
+                                style={{
+                                    width: "100%",
+                                    borderRadius: "8px",
+                                    display: "block",
+                                    cursor: "pointer"
+                                }}
+                            />
                         </div>
 
                         {/* More resources */}

@@ -343,7 +343,7 @@ export default function LoginPage() {
 
                 {/* AWS Logo */}
                 <div className="lp-logo-wrap">
-                    <div className="lp-logo">aws</div>
+                    <img src="/aws-logo.png" alt="AWS" style={{ height: "36px", width: "auto" }} />
                 </div>
 
                 {/* Card + Panel */}
