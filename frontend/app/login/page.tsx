@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveToken } from "@/lib/auth";
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://aws-route-53-clone-production.up.railway.app/health";
 
 
 export default function LoginPage() {
