@@ -29,7 +29,7 @@ allowed_frontend = os.getenv("FRONTEND_URL", "")
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://aws-route-53-clone-iota.vercel.app/"
+    "https://aws-route-53-clone-mu.vercel.app/"
 ]
 
 if allowed_frontend:
